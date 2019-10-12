@@ -8,7 +8,7 @@ mod types {
     use diesel::pg::{Pg, PgMetadataLookup, PgTypeMetadata};
     use diesel::types::HasSqlType;
 
-    #[derive(Clone, Copy, QueryId)]
+    #[derive(Clone, Copy, QueryId, SqlType)]
     pub struct Ltree;
 
     impl HasSqlType<Ltree> for Pg {
@@ -17,7 +17,7 @@ mod types {
         }
     }
 
-    #[derive(Clone, Copy, QueryId)]
+    #[derive(Clone, Copy, QueryId, SqlType)]
     pub struct Lquery;
 
     impl HasSqlType<Lquery> for Pg {
@@ -26,7 +26,7 @@ mod types {
         }
     }
 
-    #[derive(Clone, Copy, QueryId)]
+    #[derive(Clone, Copy, QueryId, SqlType)]
     pub struct Ltxtquery;
 
     impl HasSqlType<Ltxtquery> for Pg {
@@ -69,7 +69,6 @@ mod functions {
 mod dsl {
     use types::*;
     use diesel::expression::{AsExpression, Expression};
-    use diesel::types::SingleValue;
     use diesel::sql_types::Array;
 
     mod predicates {
@@ -89,8 +88,6 @@ mod dsl {
     }
 
     use self::predicates::*;
-
-    impl SingleValue for Ltree {}
 
     pub trait LtreeExtensions: Expression<SqlType = Ltree> + Sized {
         fn contains<T: AsExpression<Ltree>>(self, other: T) -> Contains<Self, T::Expression> {

@@ -40,6 +40,18 @@ mod types {
     }
 
     impl_query_id!(Ltxtquery);
+
+    impl diesel::serialize::ToSql<Ltree, Pg> for String {
+        fn to_sql<W: std::io::Write>(&self, out: &mut diesel::serialize::Output<W, Pg>) -> diesel::serialize::Result {
+            diesel::serialize::ToSql::<diesel::sql_types::Text, Pg>::to_sql(self, out)
+        }
+    }
+
+    impl diesel::serialize::ToSql<Ltree, Pg> for str {
+        fn to_sql<W: std::io::Write>(&self, out: &mut diesel::serialize::Output<W, Pg>) -> diesel::serialize::Result {
+            diesel::serialize::ToSql::<diesel::sql_types::Text, Pg>::to_sql(self, out)
+        }
+    }
 }
 
 mod functions {

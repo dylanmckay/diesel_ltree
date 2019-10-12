@@ -8,7 +8,7 @@ mod types {
     use diesel::pg::{Pg, PgMetadataLookup, PgTypeMetadata};
     use diesel::types::HasSqlType;
 
-    #[derive(Clone, Copy)]
+    #[derive(Clone, Copy, QueryId)]
     pub struct Ltree;
 
     impl HasSqlType<Ltree> for Pg {
@@ -17,9 +17,7 @@ mod types {
         }
     }
 
-    impl_query_id!(Ltree);
-
-    #[derive(Clone, Copy)]
+    #[derive(Clone, Copy, QueryId)]
     pub struct Lquery;
 
     impl HasSqlType<Lquery> for Pg {
@@ -28,9 +26,7 @@ mod types {
         }
     }
 
-    impl_query_id!(Lquery);
-
-    #[derive(Clone, Copy)]
+    #[derive(Clone, Copy, QueryId)]
     pub struct Ltxtquery;
 
     impl HasSqlType<Ltxtquery> for Pg {
@@ -38,8 +34,6 @@ mod types {
             lookup.lookup_type("ltxtquery")
         }
     }
-
-    impl_query_id!(Ltxtquery);
 
     impl diesel::serialize::ToSql<Ltree, Pg> for String {
         fn to_sql<W: std::io::Write>(&self, out: &mut diesel::serialize::Output<W, Pg>) -> diesel::serialize::Result {
